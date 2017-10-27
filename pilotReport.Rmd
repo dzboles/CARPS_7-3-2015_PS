@@ -1,0 +1,121 @@
+---
+title: "CARPS Reproducibility Report"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+#### Article ID: 7-3-2015_PS
+#### Pilot 1: Danielle Boles
+#### Co-pilot: Michael Ko
+#### Start date: 10/27/17
+#### End date: 10/27/17   
+
+-------
+
+#### Methods summary: 
+Participants (N=21) performed switch trials and repeat trials and were presented unconcious cues. Unconscious cues were followed by a mask (X) and included letters "O" (non-predictive cue), "M" (switch predictive cue), and "T" (repeat predictive cue). One task was to choose the larger value of two values if surrounded by a green box. The other task was to choose the value with the larger font if surrounded by a blue box. Switch trials were trials alternating green and blue boxes. Reaction times and performance accuracy of switch and repeat trials are compared.
+
+------
+
+#### Target outcomes: 
+Performance on switch trials, relative to repeat trials, incurred a switch cost that was evident in longer RTs (836 vs. 689 ms) and lower accuracy rates (79% vs. 92%). If participants were able to learn the predictive value of the cue that preceded only switch trials and could instantiate relevant anticipatory control in response to it, the performance on switch trials preceded by this cue would be better than on switch trials preceded by the nonpredictive cue. This was indeed the case (mean RT—predictive cue: 819 ms; nonpredictive cue: 871 ms; mean difference = 52 ms, 95% confidence interval, or CI = [19.5, 84.4]), two-tailed paired t(20) = 3.34, p < .01. However, error rates did not differ across these two groups of switch trials (predictive cue: 78.9%; nonpredictive cue: 78.8%), p = .8. 
+
+------
+
+[The chunk below sets up some formatting options for the R Markdown document]
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Step 1: Load packages
+
+[Some useful packages are being loaded below. You can add any additional ones you might need too.]
+
+```{r}
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+library(CARPSreports) # custom report functions
+```
+
+## Step 2: Load data
+
+```{r}
+dir('data/Experiment 1')
+files <- dir('data/Experiment 1')
+
+data <- data.frame()
+id <- 1
+for (file in files){
+  if(file != 'Codebook.xls'){
+    temp_data <- read_xls(file.path('data/Experiment 1', file))
+    temp_data$id <- id
+    id <- id + 1
+    temp_data <-
+    data <- rbind(data, temp_data)
+  }
+}
+```
+
+## Step 3: Tidy data
+
+```{r}
+data_tidy <- data %>% 
+  select(Prime, TrialType, CorrResp, RT)
+```
+
+## Step 4: Run analysis
+
+### Pre-processing
+
+[you can remove this section if no pre-processing is required]
+
+```{r}
+```
+
+### Descriptive statistics
+
+```{r}
+```
+
+### Inferential statistics
+
+```{r}
+```
+
+## Step 5: Conclusion
+
+[Include the carpsReport function below]
+
+```{r}
+# You can delete this commented text for your report, it is here to serve as a guide.
+# Use the carpsReport() function in this code chunk.
+# Here is a guide to the arguments you should include in the function:
+# Report_Type: Enter 'pilot' or 'final'
+# Article_ID: Enter the article's unique ID code
+# Insufficient_Information_Errors: Enter the number of Insufficient Information Errors
+# Decision_Errors Enter: the number of decision errors
+# Major_Numerical_Errors: Enter the number of major numerical errors
+# Time_to_Complete: Enter the estimated time to complete the report in minutes
+# Author_Assistance: Enter whether author assistance was required (TRUE/FALSE)
+# FOR EXAMPLE:
+# carpsReport(Report_Type = "pilot", 
+#             Article_ID = "ABhgyo", 
+#             Insufficient_Information_Errors = 0, 
+#             Decision_Errors = 1, 
+#             Major_Numerical_Errors = 4, 
+#             Time_to_Complete = 120, 
+#             Author_Assistance = TRUE)
+```
+
+[Please also include a brief text summary describing your findings. If this reproducibility check was a failure, you should note any suggestions as to what you think the likely cause(s) might be.]
+
+[This function will output information about the package versions used in this report:]
+
+```{r session_info, include=TRUE, echo=TRUE, results='markup'}
+devtools::session_info()
+```
